@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Anggota - Portal IF Ubhara</title>
+    <title>Direktori Anggota & Personalia - Portal Informatika UBHARA</title>
 
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- Tailwind CSS Setup -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,16 +24,15 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#1E3A8A',
-                        accent: '#FBBF24',
-                        neutralBg: '#F3F4F6',
+                        primary: '#1E3A8A', // Biru Tua UBHARA
+                        accent: '#FBBF24',  // Kuning Cerah Accent
+                        neutralBg: '#F3F4F6', // Abu-abu muda
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Custom Styles */
         .glass-nav {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -38,7 +40,7 @@
 
         .hero-pattern {
             background-color: #1E3A8A;
-            background-image: radial-gradient(circle at top right, rgba(251, 191, 36, 0.1) 0%, transparent 40%),
+            background-image: radial-gradient(circle at top right, rgba(251, 191, 36, 0.12) 0%, transparent 40%),
                 radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
         }
 
@@ -59,31 +61,32 @@
 
         /* Filter Button Active State */
         .filter-active {
-            background-color: #1E3A8A;
-            color: white;
-            border-color: #1E3A8A;
-            box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.1), 0 2px 4px -1px rgba(30, 58, 138, 0.06);
+            background-color: #1E3A8A !important;
+            color: white !important;
+            border-color: #1E3A8A !important;
+            box-shadow: 0 4px 12px -1px rgba(30, 58, 138, 0.25);
         }
 
         /* Profile Card Hover effect */
         .profile-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .profile-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 28px -5px rgba(30, 58, 138, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
         }
     </style>
 </head>
 
-<body class="font-sans bg-neutralBg text-gray-800 antialiased flex flex-col min-h-screen">
+<body class="flex flex-col justify-between bg-neutralBg min-h-screen font-sans text-gray-800 antialiased">
 
-    <header class="fixed w-full top-0 z-50 glass-nav border-b border-gray-200 shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header Navigation -->
+    <header class="top-0 z-50 fixed shadow-sm border-gray-200 border-b w-full transition-all duration-300 glass-nav">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div class="flex justify-between items-center h-16 md:h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-3">
+                <div class="flex flex-shrink-0 items-center gap-3">
                     <a href="{{ route('beranda') }}" class="flex items-center gap-1.5 hover:opacity-80 transition-opacity">
                         <img src="{{ asset('ubhara_logo.png') }}" alt="Logo Ubhara"
                             class="shadow-sm border border-gray-100 rounded-full w-9 h-9 sm:w-10 sm:h-10 object-cover"
@@ -96,33 +99,33 @@
                             title="HIMATIKA">
                     </a>
                     <div class="hidden sm:block ml-1">
-                        <h1 class="font-bold text-xl text-primary leading-tight">Portal IF</h1>
-                        <p class="text-xs text-gray-500 font-medium">Ubhara Surabaya</p>
+                        <h1 class="font-bold text-primary text-xl leading-tight">Portal IF</h1>
+                        <p class="font-medium text-gray-500 text-xs">Ubhara Surabaya</p>
                     </div>
                 </div>
 
                 <!-- Desktop Menu -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="{{ route('beranda') }}"
-                        class="text-gray-600 hover:text-primary font-medium px-1 py-2 transition-colors">Beranda</a>
+                        class="px-1 py-2 font-medium text-gray-600 hover:text-primary transition-colors">Beranda</a>
 
                     <!-- Lab Dropdown -->
                     <div class="group relative">
                         <a href="{{ url('/#laboratorium') }}"
-                            class="text-gray-600 hover:text-primary font-medium px-1 py-2 flex items-center gap-1 transition-colors">
-                            Laboratorium <i class="ph ph-caret-down text-sm"></i>
+                            class="flex items-center gap-1 px-1 py-2 font-medium text-gray-600 hover:text-primary transition-colors">
+                            Laboratorium <i class="text-sm ph ph-caret-down"></i>
                         </a>
                         <div
-                            class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100">
+                            class="invisible group-hover:visible left-0 absolute bg-white opacity-0 group-hover:opacity-100 shadow-lg mt-2 border border-gray-100 rounded-xl w-48 transition-all duration-200">
                             <div class="py-2">
                                 <a href="{{ route('jadwal_lab') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-neutralBg hover:text-primary">Jadwal
+                                    class="block hover:bg-neutralBg px-4 py-2 text-gray-700 hover:text-primary text-sm">Jadwal
                                     Lab</a>
                                 <a href="{{ route('pinjam_alat') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-neutralBg hover:text-primary">Peminjaman
+                                    class="block hover:bg-neutralBg px-4 py-2 text-gray-700 hover:text-primary text-sm">Peminjaman
                                     Alat</a>
                                 <a href="{{ route('lapor') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-neutralBg hover:text-primary">Lapor
+                                    class="block hover:bg-neutralBg px-4 py-2 text-gray-700 hover:text-primary text-sm">Lapor
                                     Kerusakan</a>
                             </div>
                         </div>
@@ -130,38 +133,44 @@
 
                     <div class="group relative">
                         <a href="{{ url('/#himatika') }}"
-                            class="text-gray-600 hover:text-primary font-medium px-1 py-2 flex items-center gap-1 transition-colors">
-                            HIMATIKA <i class="ph ph-caret-down text-sm"></i>
+                            class="flex items-center gap-1 px-1 py-2 font-medium text-gray-600 hover:text-primary transition-colors">
+                            HIMATIKA <i class="text-sm ph ph-caret-down"></i>
                         </a>
                         <div
-                            class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100">
+                            class="invisible group-hover:visible left-0 absolute bg-white opacity-0 group-hover:opacity-100 shadow-lg mt-2 border border-gray-100 rounded-xl w-48 transition-all duration-200">
                             <div class="py-2">
                                 <a href="{{ route('berita') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-neutralBg hover:text-primary">Berita
+                                    class="block hover:bg-neutralBg px-4 py-2 text-gray-700 hover:text-primary text-sm">Berita
                                     & Acara</a>
                                 <a href="{{ route('galeri') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-neutralBg hover:text-primary">Galeri</a>
+                                    class="block hover:bg-neutralBg px-4 py-2 text-gray-700 hover:text-primary text-sm">Galeri</a>
                             </div>
                         </div>
                     </div>
 
                     <a href="{{ route('anggota') }}"
-                        class="text-primary font-semibold border-b-2 border-accent px-1 py-2">Anggota</a>
+                        class="border-accent px-1 py-2 border-b-2 font-semibold text-primary">Anggota</a>
                 </nav>
 
-                <!-- SSO Absensi Button (Desktop) -->
-                <div class="hidden md:flex items-center">
+                <!-- Action Buttons: Absensi & Login (Desktop) -->
+                <div class="hidden md:flex items-center gap-2.5">
                     <a href="{{ route('absensi') }}"
-                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
                         <i class="text-lg ph ph-user-circle"></i>
                         Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors"
+                        title="Login CMS Portal">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
                     </a>
                 </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-primary hover:text-blue-900 focus:outline-none p-2">
-                        <i class="ph ph-list text-2xl"></i>
+                    <button id="mobile-menu-btn" class="p-2 focus:outline-none text-primary hover:text-blue-900">
+                        <i class="text-2xl ph ph-list"></i>
                     </button>
                 </div>
             </div>
@@ -189,318 +198,244 @@
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Peminjaman Alat</a>
                 <a href="{{ route('lapor') }}"
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Lapor Kerusakan</a>
-                <a href="{{ route('absensi') }}"
-                    class="flex justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm mt-3 px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
-                    <i class="text-lg ph ph-user-circle"></i>
-                    Absensi
-                </a>
+                <div class="flex gap-2.5 pt-2">
+                    <a href="{{ route('absensi') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-user-circle"></i>
+                        Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
-    <section class="pt-28 pb-12 md:pt-32 md:pb-16 hero-pattern border-b-4 border-accent">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Hero Banner & Header Title -->
+    <section class="border-accent pt-28 md:pt-32 pb-12 md:pb-16 border-b-4 text-center text-white hero-pattern">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium backdrop-blur-sm text-white mb-4">
-                <i class="ph ph-users-three text-accent"></i> Kepengurusan & Keanggotaan
+                class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm mb-4 px-4 py-1.5 border border-white/20 rounded-full font-medium text-sm text-white">
+                <i class="text-accent ph ph-users-three"></i> Kepengurusan & Personalia Terverifikasi
             </div>
-            <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">Direktori <span
-                    class="text-accent">Anggota</span></h1>
-            <p class="text-blue-100 max-w-2xl mx-auto text-sm md:text-base">
-                Kenali lebih dekat jajaran pengurus HIMATIKA, asisten laboratorium, dan para anggota aktif Teknik
-                Informatika Universitas Bhayangkara Surabaya.
+            <h1 class="font-bold text-3xl md:text-5xl text-white">
+                Direktori <span class="text-accent">Anggota & Pengurus</span>
+            </h1>
+            <p class="mx-auto mt-4 max-w-2xl text-blue-100 text-sm md:text-base">
+                Kenali lebih dekat jajaran Dosen Pembina, Asisten Laboratorium, dan Pengurus HIMATIKA Teknik Informatika Universitas Bhayangkara Surabaya.
             </p>
         </div>
     </section>
 
-    <section class="py-10 flex-grow bg-neutralBg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Main Content Area -->
+    <section class="flex-grow bg-neutralBg py-10">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
 
-            <!-- Category Filters -->
-            <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
-                <button
-                    class="filter-btn filter-active px-6 py-2.5 rounded-full text-sm font-semibold border border-gray-200 transition-all shadow-sm flex items-center gap-2"
-                    data-filter="all">
-                    <i class="ph ph-squares-four"></i> Semua
-                </button>
-                <button
-                    class="filter-btn bg-white text-gray-600 hover:bg-gray-50 px-6 py-2.5 rounded-full text-sm font-semibold border border-gray-200 transition-all shadow-sm flex items-center gap-2"
-                    data-filter="hima">
-                    <i class="ph ph-users"></i> Pengurus HIMATIKA
-                </button>
-                <button
-                    class="filter-btn bg-white text-gray-600 hover:bg-gray-50 px-6 py-2.5 rounded-full text-sm font-semibold border border-gray-200 transition-all shadow-sm flex items-center gap-2"
-                    data-filter="lab">
-                    <i class="ph ph-flask"></i> Asisten Laboratorium
-                </button>
+            <!-- Search Bar & Filters -->
+            <div class="space-y-6 mb-10">
+
+                <!-- 1. Search Box -->
+                <div class="mx-auto max-w-xl">
+                    <div class="relative shadow-sm rounded-2xl">
+                        <div class="left-0 absolute inset-y-0 flex items-center pl-4 text-gray-400 pointer-events-none">
+                            <i class="text-xl ph ph-magnifying-glass"></i>
+                        </div>
+                        <input type="text" id="search-member" onkeyup="filterMembers()"
+                            placeholder="Cari nama anggota, jabatan, NIM/NIDN, atau fokus keahlian..."
+                            class="bg-white focus:bg-white py-3.5 pr-4 pl-12 border border-gray-200 focus:border-primary rounded-2xl focus:ring-2 focus:ring-primary/20 w-full font-medium text-sm transition-all placeholder-gray-400">
+                    </div>
+                </div>
+
+                <!-- 2. Category Filter Pills (3 Kategori: Dosen, Aslab, HIMATIKA) -->
+                <div class="flex flex-wrap justify-center items-center gap-3">
+                    <button
+                        class="filter-btn filter-active flex items-center gap-2 bg-white shadow-xs px-6 py-2.5 border border-gray-200 rounded-full font-semibold text-gray-600 text-sm transition-all cursor-pointer"
+                        data-filter="all">
+                        <i class="ph ph-squares-four"></i> Semua ({{ $stats['total'] ?? 0 }})
+                    </button>
+                    <button
+                        class="filter-btn flex items-center gap-2 bg-white hover:bg-gray-50 shadow-xs px-6 py-2.5 border border-gray-200 rounded-full font-semibold text-gray-600 text-sm transition-all cursor-pointer"
+                        data-filter="dosen">
+                        <i class="text-emerald-600 ph ph-chalkboard-teacher"></i> Dosen Pembina ({{ $stats['dosen'] ?? 0 }})
+                    </button>
+                    <button
+                        class="filter-btn flex items-center gap-2 bg-white hover:bg-gray-50 shadow-xs px-6 py-2.5 border border-gray-200 rounded-full font-semibold text-gray-600 text-sm transition-all cursor-pointer"
+                        data-filter="aslab">
+                        <i class="text-amber-500 ph ph-flask"></i> Asisten Laboratorium ({{ $stats['aslab'] ?? 0 }})
+                    </button>
+                    <button
+                        class="filter-btn flex items-center gap-2 bg-white hover:bg-gray-50 shadow-xs px-6 py-2.5 border border-gray-200 rounded-full font-semibold text-gray-600 text-sm transition-all cursor-pointer"
+                        data-filter="himatika">
+                        <i class="text-blue-500 ph ph-users"></i> Pengurus HIMATIKA ({{ $stats['himatika'] ?? 0 }})
+                    </button>
+                </div>
+
             </div>
 
-            <!-- Members Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="members-grid">
+            <!-- Members Grid Container -->
+            <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="members-grid">
 
-                <!-- Member 1 (HIMA) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="hima">
-                    <div class="h-20 bg-gradient-to-r from-blue-700 to-primary"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        HIMATIKA
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/1E3A8A?text=BS" alt="Budi Santoso"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
+                @forelse($members as $member)
+                    @php
+                        // Banner gradient & badge mapping based on 3 categories
+                        $badgeLabel = match($member->kategori) {
+                            'dosen' => 'DOSEN PEMBINA',
+                            'aslab' => 'ASISTEN LAB',
+                            'himatika' => 'PENGURUS HIMATIKA',
+                            default => strtoupper(str_replace('_', ' ', $member->kategori))
+                        };
+
+                        $headerGradient = match($member->kategori) {
+                            'dosen' => 'from-emerald-700 via-teal-800 to-primary',
+                            'aslab' => 'from-amber-500 via-yellow-600 to-amber-700',
+                            'himatika' => 'from-blue-700 via-indigo-800 to-primary',
+                            default => 'from-gray-700 to-gray-900'
+                        };
+
+                        // Avatar photo resolver
+                        $avatarUrl = $member->foto
+                            ? asset('storage/' . $member->foto)
+                            : 'https://ui-avatars.com/api/?name=' . urlencode($member->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';
+                    @endphp
+
+                    <div class="relative bg-white shadow-xs border border-gray-100 rounded-2xl overflow-hidden profile-card member-card"
+                        data-category="{{ $member->kategori }}"
+                        data-search="{{ strtolower($member->nama . ' ' . $member->nim_nidn . ' ' . $member->jabatan . ' ' . $member->divisi_keahlian . ' ' . $badgeLabel) }}">
+
+                        <!-- Card Header Gradient Banner -->
+                        <div class="h-20 bg-gradient-to-r {{ $headerGradient }}"></div>
+
+                        <!-- Top Right Category Badge -->
+                        <div class="top-3 right-3 absolute bg-black/25 backdrop-blur-md px-2.5 py-1 border border-white/20 rounded-md font-bold text-[10px] text-white tracking-wider">
+                            {{ $badgeLabel }}
                         </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Budi Santoso</h3>
-                            <p class="text-primary text-sm font-semibold mb-1">Ketua HIMATIKA</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2023 • 1904111001</p>
 
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-envelope-simple text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-pink-600 transition-colors"><i
-                                        class="ph ph-instagram-logo text-xl"></i></a>
+                        <!-- Card Body -->
+                        <div class="relative px-6 pb-6">
+
+                            <!-- Avatar -->
+                            <div class="flex justify-center -mt-10 mb-3">
+                                <img src="{{ $avatarUrl }}" alt="{{ $member->nama }}"
+                                    class="bg-white shadow-sm border-4 border-white rounded-full w-20 h-20 object-cover">
+                            </div>
+
+                            <!-- Bio Information -->
+                            <div class="text-center">
+                                <h3 class="font-bold text-base text-gray-800 leading-snug line-clamp-1" title="{{ $member->nama }}">
+                                    {{ $member->nama }}
+                                </h3>
+                                <p class="font-semibold text-primary text-xs mt-0.5 line-clamp-1" title="{{ $member->jabatan }}">
+                                    {{ $member->jabatan }}
+                                </p>
+
+                                <!-- NIM / Angkatan -->
+                                <div class="flex justify-center items-center gap-1.5 mt-1 text-[11px] text-gray-400 font-mono">
+                                    @if($member->angkatan)
+                                        <span>Angk. {{ $member->angkatan }}</span>
+                                        @if($member->nim_nidn) <span>•</span> @endif
+                                    @endif
+                                    @if($member->nim_nidn)
+                                        <span>{{ $member->nim_nidn }}</span>
+                                    @endif
+                                </div>
+
+                                <!-- Divisi / Keahlian Pill -->
+                                @if($member->divisi_keahlian)
+                                    <div class="mt-3">
+                                        <span class="inline-block bg-gray-100 text-gray-600 text-[11px] px-2.5 py-1 rounded-lg font-medium truncate max-w-full" title="{{ $member->divisi_keahlian }}">
+                                            <i class="ph ph-sparkle text-accent mr-1"></i>{{ $member->divisi_keahlian }}
+                                        </span>
+                                    </div>
+                                @endif
+
+                                <!-- Social Links -->
+                                <div class="flex justify-center items-center gap-3 mt-4 pt-3.5 border-t border-gray-100">
+                                    @if($member->linkedin_url)
+                                        <a href="{{ $member->linkedin_url }}" target="_blank" rel="noopener noreferrer"
+                                            class="text-gray-400 hover:text-blue-600 transition-colors p-1" title="LinkedIn">
+                                            <i class="text-lg ph ph-linkedin-logo"></i>
+                                        </a>
+                                    @endif
+
+                                    @if($member->github_url)
+                                        <a href="{{ $member->github_url }}" target="_blank" rel="noopener noreferrer"
+                                            class="text-gray-400 hover:text-gray-900 transition-colors p-1" title="GitHub">
+                                            <i class="text-lg ph ph-github-logo"></i>
+                                        </a>
+                                    @endif
+
+                                    @if($member->instagram_url)
+                                        <a href="{{ $member->instagram_url }}" target="_blank" rel="noopener noreferrer"
+                                            class="text-gray-400 hover:text-pink-600 transition-colors p-1" title="Instagram">
+                                            <i class="text-lg ph ph-instagram-logo"></i>
+                                        </a>
+                                    @endif
+
+                                    @if($member->email_kontak)
+                                        <a href="mailto:{{ $member->email_kontak }}"
+                                            class="text-gray-400 hover:text-amber-600 transition-colors p-1" title="Email: {{ $member->email_kontak }}">
+                                            <i class="text-lg ph ph-envelope-simple"></i>
+                                        </a>
+                                    @endif
+                                </div>
+
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Member 2 (LAB) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="lab">
-                    <div class="h-20 bg-gradient-to-r from-yellow-500 to-accent"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-black/10 backdrop-blur-sm border border-black/10 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        LABORATORIUM
                     </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/F59E0B?text=SA" alt="Siti Aminah"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Siti Aminah</h3>
-                            <p class="text-yellow-600 text-sm font-semibold mb-1">Koordinator Asisten Lab</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2022 • 1904110998</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-github-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-envelope-simple text-xl"></i></a>
-                            </div>
-                        </div>
+                @empty
+                    <div class="col-span-full py-16 text-center text-gray-400">
+                        <i class="ph ph-user-minus text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-sm font-medium">Belum ada data anggota yang dipublikasikan.</p>
                     </div>
-                </div>
+                @endforelse
 
-                <!-- Member 3 (HIMA) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="hima">
-                    <div class="h-20 bg-gradient-to-r from-blue-700 to-primary"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        HIMATIKA
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/1E3A8A?text=AW" alt="Andi Wijaya"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Andi Wijaya</h3>
-                            <p class="text-primary text-sm font-semibold mb-1">Ketua Divisi Ristek</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2024 • 1904111050</p>
+            </div>
 
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-github-logo text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 4 (LAB) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="lab">
-                    <div class="h-20 bg-gradient-to-r from-yellow-500 to-accent"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-black/10 backdrop-blur-sm border border-black/10 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        LABORATORIUM
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/F59E0B?text=DP" alt="Dinda Putri"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Dinda Putri</h3>
-                            <p class="text-yellow-600 text-sm font-semibold mb-1">Asisten Lab Jaringan</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2023 • 1904111015</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-envelope-simple text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 5 (HIMA) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="hima">
-                    <div class="h-20 bg-gradient-to-r from-blue-700 to-primary"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        HIMATIKA
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/1E3A8A?text=MS" alt="Maya Sari"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Maya Sari</h3>
-                            <p class="text-primary text-sm font-semibold mb-1">Bendahara Umum</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2023 • 1904111005</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-pink-600 transition-colors"><i
-                                        class="ph ph-instagram-logo text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 6 (HIMA) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="hima">
-                    <div class="h-20 bg-gradient-to-r from-blue-700 to-primary"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        HIMATIKA
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/1E3A8A?text=RM" alt="Riko Maulana"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Riko Maulana</h3>
-                            <p class="text-primary text-sm font-semibold mb-1">Staff Div. Eksternal</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2024 • 1904111080</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 7 (LAB) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="lab">
-                    <div class="h-20 bg-gradient-to-r from-yellow-500 to-accent"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-black/10 backdrop-blur-sm border border-black/10 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        LABORATORIUM
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/F59E0B?text=KA" alt="Kevin Aprilio"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Kevin Aprilio</h3>
-                            <p class="text-yellow-600 text-sm font-semibold mb-1">Asisten Lab Multimedia</p>
-                            <p class="text-gray-400 text-xs mb-4">Angkatan 2024 • 1904111075</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-github-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-envelope-simple text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 8 (LAB) -->
-                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden profile-card member-card relative"
-                    data-category="lab">
-                    <div class="h-20 bg-gradient-to-r from-yellow-500 to-accent"></div>
-                    <div
-                        class="absolute top-4 right-4 bg-black/10 backdrop-blur-sm border border-black/10 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm">
-                        LABORATORIUM
-                    </div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="flex justify-center -mt-10 mb-4">
-                            <img src="https://placehold.co/200x200/F3F4F6/F59E0B?text=RF" alt="Reza Fahlevi"
-                                class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm bg-white">
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-lg font-bold text-gray-800 leading-tight">Reza Fahlevi</h3>
-                            <p class="text-yellow-600 text-sm font-semibold mb-1">Laboran / Admin Lab</p>
-                            <p class="text-gray-400 text-xs mb-4">Staff Karyawan Tetap</p>
-
-                            <div class="flex justify-center gap-3 pt-4 border-t border-gray-100">
-                                <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors"><i
-                                        class="ph ph-linkedin-logo text-xl"></i></a>
-                                <a href="#" class="text-gray-400 hover:text-gray-800 transition-colors"><i
-                                        class="ph ph-envelope-simple text-xl"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- No Search Results Found Alert -->
+            <div id="no-search-results" class="hidden py-16 text-center text-gray-400">
+                <i class="ph ph-magnifying-glass text-4xl text-gray-300 mb-2"></i>
+                <p class="text-sm font-semibold text-gray-600">Tidak ada anggota yang cocok dengan pencarian.</p>
+                <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci lain atau pilih filter kategori "Semua".</p>
             </div>
 
             <!-- Registration CTA Section -->
             <div
-                class="mt-16 bg-gradient-to-br from-primary to-blue-900 rounded-3xl p-8 md:p-12 text-center text-white shadow-xl relative overflow-hidden border border-blue-800">
+                class="relative bg-gradient-to-br from-primary to-blue-900 shadow-xl mt-16 p-8 md:p-12 border border-blue-800 rounded-3xl overflow-hidden text-center text-white">
                 <div
-                    class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')]">
+                    class="opacity-10 absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=')]">
                 </div>
 
-                <div class="relative z-10 max-w-2xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Tertarik Bergabung Bersama Kami?</h2>
-                    <p class="text-blue-100 mb-8 text-sm md:text-base">
-                        Kembangkan minat, bakat, dan pengalaman organisasimu dengan menjadi bagian dari keluarga besar
-                        HIMATIKA atau tingkatkan skill teknismu dengan menjadi Asisten Laboratorium.
+                <div class="z-10 relative mx-auto max-w-2xl">
+                    <h2 class="font-bold text-2xl md:text-4xl">Tertarik Bergabung Bersama Kami?</h2>
+                    <p class="mt-3 mb-8 text-blue-100 text-xs md:text-sm">
+                        Kembangkan minat, bakat, dan pengalaman organisasimu bersama keluarga besar HIMATIKA atau tingkatkan kompetensi teknis dan riset dengan menjadi Asisten Laboratorium Informatika.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button
-                            class="bg-accent text-primary px-8 py-3.5 rounded-xl font-bold hover:bg-yellow-300 transition-colors shadow-lg flex items-center justify-center gap-2">
-                            <i class="ph ph-user-plus text-xl"></i> Daftar HIMATIKA
-                        </button>
-                        <button
-                            class="bg-white/10 border border-white/30 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-white/20 backdrop-blur-sm transition-colors shadow-lg flex items-center justify-center gap-2">
-                            <i class="ph ph-student text-xl"></i> Rekrutmen Asisten Lab
-                        </button>
+                    <div class="flex sm:flex-row flex-col justify-center gap-4">
+                        <a href="https://instagram.com/himatika_ubhara" target="_blank"
+                            class="flex justify-center items-center gap-2 bg-accent hover:bg-yellow-300 shadow-lg px-8 py-3.5 rounded-xl font-bold text-primary transition-colors">
+                            <i class="text-xl ph ph-user-plus"></i> Rekrutmen HIMATIKA
+                        </a>
+                        <a href="{{ route('berita') }}"
+                            class="flex justify-center items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm shadow-lg px-8 py-3.5 border border-white/30 rounded-xl font-bold text-white transition-colors">
+                            <i class="text-xl ph ph-student"></i> Info Open Recruitment Aslab
+                        </a>
                     </div>
-                    <p class="text-xs text-blue-300 mt-4"><i class="ph ph-info"></i> Pendaftaran akan dibuka pada awal
-                        semester ganjil.</p>
+                    <p class="mt-4 text-blue-300 text-xs"><i class="ph ph-info"></i> Pendaftaran dibuka berkala setiap awal semester perkuliahan.</p>
                 </div>
             </div>
 
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-gray-300 py-12 md:py-16 border-t-4 border-accent mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+    <!-- Footer -->
+    <footer class="bg-gray-900 mt-auto py-12 md:py-16 border-accent border-t-4 text-gray-300">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div class="gap-10 grid grid-cols-1 md:grid-cols-4">
                 <!-- Brand Info -->
                 <div class="md:col-span-2 pr-0 md:pr-10">
                     <div class="flex items-center gap-4 mb-6">
@@ -511,11 +446,11 @@
                             <img src="{{ asset('himatika_logo.png') }}" alt="Logo HIMA" class="shadow-sm rounded-full w-9 h-9">
                         </div>
                         <div>
-                            <h2 class="font-bold text-xl text-white leading-tight">Portal IF Ubhara</h2>
-                            <p class="text-xs text-gray-400 font-medium">Universitas Bhayangkara Surabaya</p>
+                            <h2 class="font-bold text-white text-xl leading-tight">Portal IF Ubhara</h2>
+                            <p class="font-medium text-gray-400 text-xs">Universitas Bhayangkara Surabaya</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                    <p class="mb-6 text-gray-400 text-sm leading-relaxed">
                         Platform terintegrasi pusat informasi dan layanan Laboratorium Teknik Informatika serta website
                         resmi Himpunan Mahasiswa Teknik Informatika (HIMATIKA).
                     </p>
@@ -523,119 +458,157 @@
 
                 <!-- Links Lab -->
                 <div>
-                    <h3 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">Laboratorium</h3>
+                    <h3 class="mb-4 font-bold text-white text-sm uppercase tracking-wider">Laboratorium</h3>
                     <ul class="space-y-3 text-sm">
                         <li><a href="{{ route('jadwal_lab') }}"
-                                class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Jadwal Ruangan</a></li>
+                                class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Jadwal Ruangan</a></li>
                         <li><a href="{{ route('pinjam_alat') }}"
-                                class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Peminjaman Inventaris</a></li>
+                                class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Peminjaman Inventaris</a></li>
                         <li><a href="{{ route('lapor') }}"
-                                class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Lapor Kerusakan</a></li>
-                        <li><a href="{{ route('beranda') }}#laboratorium" class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> SOP & Tata Tertib</a></li>
+                                class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Lapor Kerusakan</a></li>
+                        <li><a href="{{ route('absensi') }}"
+                                class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Presensi Mahasiswa</a></li>
                     </ul>
                 </div>
 
                 <!-- Links HIMATIKA -->
                 <div>
-                    <h3 class="text-white font-bold mb-4 uppercase text-sm tracking-wider">HIMATIKA</h3>
+                    <h3 class="mb-4 font-bold text-white text-sm uppercase tracking-wider">HIMATIKA</h3>
                     <ul class="space-y-3 text-sm">
-                        <li><a href="{{ route('beranda') }}#himatika" class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Profil Organisasi</a></li>
+                        <li><a href="{{ route('beranda') }}#himatika" class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Profil Organisasi</a></li>
                         <li><a href="{{ route('berita') }}"
-                                class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Berita & Acara</a></li>
-                        <li><a href="{{ route('galeri') }}" class="hover:text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Galeri Kegiatan</a></li>
-                        <li><a href="{{ route('anggota') }}" class="text-accent transition-colors flex items-center gap-2"><i
-                                    class="ph ph-caret-right text-xs"></i> Daftar Anggota</a></li>
+                                class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Berita & Acara</a></li>
+                        <li><a href="{{ route('galeri') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Galeri Kegiatan</a></li>
+                        <li><a href="{{ route('anggota') }}" class="flex items-center gap-2 text-accent transition-colors"><i
+                                    class="text-xs ph ph-caret-right"></i> Direktori Anggota</a></li>
                     </ul>
                 </div>
             </div>
 
             <div
-                class="mt-12 pt-8 border-t border-gray-800 text-sm text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
-                <p>&copy; 2026 Laboratorium & HIMATIKA Teknik Informatika. Universitas Bhayangkara Surabaya.</p>
+                class="flex md:flex-row flex-col justify-between items-center gap-4 mt-12 pt-8 border-gray-800 border-t text-sm md:text-left text-center">
+                <p>&copy; {{ date('Y') }} Laboratorium & HIMATIKA Teknik Informatika. Universitas Bhayangkara Surabaya.</p>
+                <div class="flex gap-4">
+                    <a href="{{ url('/admin/login') }}" class="text-gray-400 hover:text-white transition-colors">Login CMS Pengurus</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Interactive JavaScript -->
     <script>
+        let currentFilter = 'all';
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu Logic
+            setupMobileMenu();
+            setupFilters();
+        });
+
+        // Setup Category Filter Buttons
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('filter-active'));
+                    btn.classList.add('filter-active');
+
+                    currentFilter = btn.getAttribute('data-filter') || 'all';
+                    filterMembers();
+                });
+            });
+        }
+
+        // Live Search & Category Filtering
+        function filterMembers() {
+            const searchInput = document.getElementById('search-member');
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            const cards = document.querySelectorAll('.member-card');
+            const noResults = document.getElementById('no-search-results');
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const group = card.getAttribute('data-group');
+                const searchData = card.getAttribute('data-search') || '';
+
+                // Category match condition (3 kategori: dosen, aslab, himatika)
+                const matchCategory = (currentFilter === 'all' || category === currentFilter);
+
+                // Text search match condition
+                const matchSearch = !query || searchData.includes(query);
+
+                if (matchCategory && matchSearch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (noResults) {
+                if (visibleCount === 0 && cards.length > 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            }
+        }
+
+        // Mobile Menu Setup
+        function setupMobileMenu() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuIcon = mobileMenuBtn ? mobileMenuBtn.querySelector('i') : null;
+            if (!mobileMenuBtn || !mobileMenu) return;
+            const mobileMenuIcon = mobileMenuBtn.querySelector('i');
 
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('open');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                if (mobileMenuIcon) {
+                    if (mobileMenu.classList.contains('open')) {
+                        mobileMenuIcon.classList.remove('ph-list');
+                        mobileMenuIcon.classList.add('ph-x');
+                    } else {
+                        mobileMenuIcon.classList.remove('ph-x');
+                        mobileMenuIcon.classList.add('ph-list');
+                    }
+                }
+            });
+
+            // Close mobile menu on link click
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
                     if (mobileMenuIcon) {
-                        if (mobileMenu.classList.contains('open')) {
-                            mobileMenuIcon.classList.remove('ph-list');
-                            mobileMenuIcon.classList.add('ph-x');
-                        } else {
-                            mobileMenuIcon.classList.remove('ph-x');
-                            mobileMenuIcon.classList.add('ph-list');
-                        }
+                        mobileMenuIcon.classList.remove('ph-x');
+                        mobileMenuIcon.classList.add('ph-list');
                     }
                 });
+            });
 
-                // Close mobile menu when a link is clicked
-                const mobileLinks = mobileMenu.querySelectorAll('a');
-                mobileLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('open');
-                        if (mobileMenuIcon) {
-                            mobileMenuIcon.classList.remove('ph-x');
-                            mobileMenuIcon.classList.add('ph-list');
-                        }
-                    });
-                });
-            }
-
-            // Header Scroll Effect
+            // Header Scroll
             const header = document.querySelector('header');
             if (header) {
                 window.addEventListener('scroll', () => {
                     if (window.scrollY > 20) {
                         header.classList.add('shadow-md');
-                        header.classList.remove('shadow-sm', 'py-1');
+                        header.classList.remove('shadow-sm');
                     } else {
                         header.classList.remove('shadow-md');
-                        header.classList.add('shadow-sm', 'py-1');
+                        header.classList.add('shadow-sm');
                     }
                 });
             }
-
-            // Filter Logic
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const memberCards = document.querySelectorAll('.member-card');
-
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => {
-                        b.classList.remove('filter-active');
-                        b.classList.add('bg-white', 'text-gray-600');
-                    });
-                    btn.classList.add('filter-active');
-                    btn.classList.remove('bg-white', 'text-gray-600');
-
-                    const filterValue = btn.getAttribute('data-filter');
-
-                    memberCards.forEach(card => {
-                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        });
+        }
     </script>
 </body>
 
