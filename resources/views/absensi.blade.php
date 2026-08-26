@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Absensi Laboratorium - Portal Informatika UBHARA</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -153,12 +154,18 @@
                     <a href="{{ route('anggota') }}" class="px-1 py-2 font-medium text-gray-600 hover:text-primary">Anggota</a>
                 </nav>
 
-                <!-- SSO Absensi Button (Desktop) -->
-                <div class="hidden md:flex items-center">
+                <!-- Action Buttons: Absensi & Login (Desktop) -->
+                <div class="hidden md:flex items-center gap-2.5">
                     <a href="{{ route('absensi') }}"
-                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
                         <i class="text-lg ph ph-user-circle"></i>
                         Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors"
+                        title="Login CMS Portal">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
                     </a>
                 </div>
 
@@ -193,11 +200,18 @@
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Peminjaman Alat</a>
                 <a href="{{ route('lapor') }}"
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Lapor Kerusakan</a>
-                <a href="{{ route('absensi') }}"
-                    class="flex justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm mt-3 px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
-                    <i class="text-lg ph ph-user-circle"></i>
-                    Absensi
-                </a>
+                <div class="flex gap-2.5 pt-2">
+                    <a href="{{ route('absensi') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-user-circle"></i>
+                        Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -209,13 +223,13 @@
                 <div>
                     <div
                         class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm mb-2 px-3 py-1 border border-white/20 rounded-full font-medium text-xs">
-                        <i class="text-accent ph ph-clipboard-text"></i> Presensi Masuk Laboratorium
+                        <i class="text-accent ph ph-clipboard-text"></i> Presensi Masuk Laboratorium Terintegrasi
                     </div>
                     <h1 class="font-bold text-2xl md:text-3xl leading-tight">
                         Form Absensi <span class="text-accent">Mahasiswa Lab Informatika</span>
                     </h1>
                     <p class="mt-1 max-w-xl text-blue-100 text-xs md:text-sm">
-                        Isikan NIM, Nama, dan Tujuan Anda memasuki laboratorium Teknik Informatika Ubhara Surabaya.
+                        Isikan NIM, Nama, dan Tujuan Anda memasuki laboratorium Teknik Informatika Ubhara Surabaya. Data tersimpan langsung ke sistem CMS.
                     </p>
                 </div>
                 <!-- Realtime Clock Widget -->
@@ -244,10 +258,11 @@
                         <h2 class="flex items-center gap-2 font-bold text-primary text-lg">
                             <i class="text-accent text-xl ph ph-note-pencil"></i> Input Presensi
                         </h2>
-                        <p class="text-gray-500 text-xs">Silakan lengkapi form di bawah ini</p>
+                        <p class="text-gray-500 text-xs">Silakan lengkapi form di bawah ini untuk mencatat kehadiran</p>
                     </div>
 
                     <form id="attendanceForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        @csrf
 
                         <!-- 1. NIM Field -->
                         <div>
@@ -260,7 +275,7 @@
                                     class="left-0 absolute inset-y-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
                                     <i class="text-lg ph ph-identification-card"></i>
                                 </div>
-                                <input type="text" id="nim" required placeholder="Masukkan NIM Anda"
+                                <input type="text" id="nim" name="nim" required placeholder="Contoh: 2212001"
                                     class="bg-gray-50 focus:bg-white py-3 pr-4 pl-10 border border-gray-200 focus:border-primary rounded-xl focus:ring-2 focus:ring-primary/20 w-full font-mono font-medium text-sm transition-all">
                             </div>
                         </div>
@@ -269,19 +284,45 @@
                         <div>
                             <label for="nama"
                                 class="block mb-1.5 font-bold text-gray-700 text-xs uppercase tracking-wider">
-                                Nama Mahasiswa <span class="text-red-500">*</span>
+                                Nama Lengkap Mahasiswa <span class="text-red-500">*</span>
                             </label>
                             <div class="relative shadow-xs rounded-xl">
                                 <div
                                     class="left-0 absolute inset-y-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
                                     <i class="text-lg ph ph-user"></i>
                                 </div>
-                                <input type="text" id="nama" required placeholder="Masukkan Nama Lengkap"
+                                <input type="text" id="nama" name="nama" required placeholder="Contoh: Bima Arya Pangestu"
                                     class="bg-gray-50 focus:bg-white py-3 pr-4 pl-10 border border-gray-200 focus:border-primary rounded-xl focus:ring-2 focus:ring-primary/20 w-full font-medium text-sm transition-all">
                             </div>
                         </div>
 
-                        <!-- 3. Tujuan (Text) Field -->
+                        <!-- 3. Pilih Ruangan Lab (Opsional) -->
+                        <div>
+                            <label for="lab_id"
+                                class="block mb-1.5 font-bold text-gray-700 text-xs uppercase tracking-wider">
+                                Ruangan Laboratorium (Opsional)
+                            </label>
+                            <div class="relative shadow-xs rounded-xl">
+                                <div
+                                    class="left-0 absolute inset-y-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                                    <i class="text-lg ph ph-building-office"></i>
+                                </div>
+                                <select id="lab_id" name="lab_id"
+                                    class="bg-gray-50 focus:bg-white py-3 pr-4 pl-10 border border-gray-200 focus:border-primary rounded-xl focus:ring-2 focus:ring-primary/20 w-full font-medium text-sm transition-all appearance-none cursor-pointer">
+                                    <option value="">-- Umum / Semua Ruangan --</option>
+                                    @isset($labs)
+                                        @foreach($labs as $lab)
+                                            <option value="{{ $lab->id }}">{{ $lab->nama }} ({{ $lab->kode }})</option>
+                                        @endforeach
+                                    @endisset
+                                </select>
+                                <div class="right-0 absolute inset-y-0 flex items-center pr-3.5 text-gray-400 pointer-events-none">
+                                    <i class="text-sm ph ph-caret-down"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Tujuan (Text) Field -->
                         <div>
                             <label for="tujuan"
                                 class="block mb-1.5 font-bold text-gray-700 text-xs uppercase tracking-wider">
@@ -292,18 +333,17 @@
                                     class="left-0 absolute inset-y-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
                                     <i class="text-lg ph ph-target"></i>
                                 </div>
-                                <input type="text" id="tujuan" required
-                                    placeholder="Contoh: Praktikum Pemrograman Web / Tugas Akhir"
+                                <input type="text" id="tujuan" name="tujuan" required
+                                    placeholder="Contoh: Praktikum Pemrograman Web / Riset Skripsi"
                                     class="bg-gray-50 focus:bg-white py-3 pr-4 pl-10 border border-gray-200 focus:border-primary rounded-xl focus:ring-2 focus:ring-primary/20 w-full font-medium text-sm transition-all">
                             </div>
                         </div>
 
-                        <!-- 4. Tombol Absensi -->
-                        <button type="submit"
+                        <!-- 5. Tombol Absensi -->
+                        <button type="submit" id="submitBtn"
                             class="group flex justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-md hover:shadow-lg mt-2 px-6 py-3.5 rounded-xl w-full font-bold text-white text-base transition-all cursor-pointer">
-                            <i
-                                class="text-accent text-xl group-hover:scale-110 transition-transform ph ph-check-circle"></i>
-                            Simpan Absensi
+                            <span id="btnIcon"><i class="text-accent text-xl group-hover:scale-110 transition-transform ph ph-check-circle"></i></span>
+                            <span id="btnText">Simpan Absensi</span>
                         </button>
 
                     </form>
@@ -321,9 +361,9 @@
                         class="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-3 pb-4 border-gray-100 border-b">
                         <div>
                             <h2 class="flex items-center gap-2 font-bold text-gray-800 text-lg">
-                                <i class="text-primary text-xl ph ph-users-three"></i> Daftar Mahasiswa Absen
+                                <i class="text-primary text-xl ph ph-users-three"></i> Daftar Hadir Hari Ini
                             </h2>
-                            <p class="text-gray-500 text-xs">Riwayat kehadiran mahasiswa di laboratorium</p>
+                            <p class="text-gray-500 text-xs">Riwayat kehadiran mahasiswa di laboratorium per {{ date('d M Y') }}</p>
                         </div>
 
                         <!-- 2. Jumlah Mahasiswa Absen Badge -->
@@ -331,7 +371,7 @@
                             class="flex items-center gap-2 bg-blue-50 px-3.5 py-1.5 border border-blue-100 rounded-xl font-bold text-primary text-xs shrink-0">
                             <i class="text-accent text-base ph ph-user-check"></i>
                             Total Absen: <span id="total-count-badge"
-                                class="font-extrabold text-primary text-sm">4</span> Mahasiswa
+                                class="font-extrabold text-primary text-sm">{{ $todayCount ?? 0 }}</span> Mahasiswa
                         </div>
                     </div>
 
@@ -339,13 +379,48 @@
                     <div class="relative">
                         <i class="top-3 left-3.5 absolute text-gray-400 text-base ph ph-magnifying-glass"></i>
                         <input type="text" id="search-input" onkeyup="filterStudents()"
-                            placeholder="Cari berdasarkan Nama, NIM, atau Tujuan..."
+                            placeholder="Cari berdasarkan Nama, NIM, Lab, atau Tujuan..."
                             class="bg-gray-50 focus:bg-white py-2.5 pr-4 pl-10 border border-gray-200 focus:border-primary rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 w-full font-medium text-xs transition-all">
                     </div>
 
                     <!-- 3. List Mahasiswa dan Jam Masuk -->
                     <div id="students-list" class="space-y-3 pr-1 max-h-[480px] overflow-y-auto">
-                        <!-- Dynamic items generated by JS -->
+                        @if(isset($attendances) && $attendances->count() > 0)
+                            @foreach($attendances as $index => $item)
+                                <div class="student-item p-4 bg-gray-50 border border-gray-100 rounded-xl hover:bg-white hover:border-blue-200 transition-all shadow-2xs space-y-1.5"
+                                    data-search="{{ strtolower($item->nama . ' ' . $item->nim . ' ' . ($item->lab ? $item->lab->nama : '') . ' ' . $item->tujuan) }}">
+                                    <div class="flex justify-between items-center gap-3">
+                                        <div class="flex items-center gap-3 min-w-0">
+                                            <div class="flex justify-center items-center bg-primary/10 border border-primary/20 rounded-lg w-8 h-8 font-bold text-primary text-xs shrink-0 item-number">
+                                                {{ $index + 1 }}
+                                            </div>
+                                            <div class="min-w-0">
+                                                <h4 class="font-bold text-gray-800 text-sm truncate">{{ $item->nama }}</h4>
+                                                <span class="font-mono font-semibold text-primary text-xs">{{ $item->nim }}</span>
+                                                @if($item->lab)
+                                                    <span class="ml-2 inline-flex items-center bg-blue-100 text-blue-800 text-[10px] font-medium px-2 py-0.5 rounded-full">
+                                                        {{ $item->lab->kode }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <span class="inline-flex items-center gap-1 bg-emerald-50 px-2.5 py-1 border border-emerald-200 rounded-lg font-mono font-bold text-emerald-700 text-xs shrink-0">
+                                            <i class="text-sm ph ph-clock"></i> {{ substr($item->jam_masuk, 0, 5) }} WIB
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 pt-1.5 border-gray-200/60 border-t text-gray-600 text-xs">
+                                        <i class="text-gray-400 ph ph-subtitles"></i>
+                                        <span class="font-medium text-gray-700">Tujuan:</span>
+                                        <span class="text-gray-600 truncate">{{ $item->tujuan }}</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div id="empty-state" class="py-10 text-gray-400 text-xs text-center">
+                                <i class="block mb-1 text-gray-300 text-3xl ph ph-clipboard"></i>
+                                Belum ada data mahasiswa yang melakukan absensi hari ini.
+                            </div>
+                        @endif
                     </div>
 
                 </div>
@@ -358,15 +433,15 @@
     <!-- Success Toast Notification -->
     <div id="toast-notify"
         class="right-5 bottom-5 z-50 fixed opacity-0 transition-all translate-y-20 duration-300 pointer-events-none transform">
-        <div
+        <div id="toast-card"
             class="flex items-center gap-3 bg-gray-900 shadow-2xl px-5 py-3.5 border border-gray-700 rounded-2xl text-white">
-            <div
+            <div id="toast-icon"
                 class="flex justify-center items-center bg-emerald-500/20 rounded-xl w-8 h-8 text-emerald-400 text-xl shrink-0">
                 <i class="ph ph-check-bold"></i>
             </div>
             <div>
-                <h5 class="font-bold text-white text-xs">Absensi Berhasil!</h5>
-                <p id="toast-msg" class="text-[11px] text-gray-300">Data presensi telah tersimpan.</p>
+                <h5 id="toast-title" class="font-bold text-white text-xs">Absensi Berhasil!</h5>
+                <p id="toast-msg" class="text-[11px] text-gray-300">Data presensi telah tersimpan ke database.</p>
             </div>
         </div>
     </div>
@@ -378,7 +453,6 @@
                 <!-- Brand Info -->
                 <div class="md:col-span-2 pr-0 md:pr-10">
                     <div class="flex items-center gap-4 mb-6">
-                        <!-- Dummy Logos Footer -->
                         <div
                             class="flex items-center gap-2 bg-white/10 backdrop-blur-sm p-1.5 border border-white/10 rounded-full">
                             <img src="{{ asset('ubhara_logo.png') }}" alt="Logo Ubhara" class="shadow-sm rounded-full w-9 h-9">
@@ -395,13 +469,13 @@
                         resmi Himpunan Mahasiswa Teknik Informatika (HIMATIKA).
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
+                        <a href="https://instagram.com/himatika_ubhara" target="_blank"
                             class="flex justify-center items-center bg-gray-800 hover:bg-primary rounded-full w-10 h-10 hover:text-white transition-colors"><i
                                 class="text-xl ph ph-instagram-logo"></i></a>
-                        <a href="#"
+                        <a href="https://youtube.com/@himatikaubhara" target="_blank"
                             class="flex justify-center items-center bg-gray-800 hover:bg-primary rounded-full w-10 h-10 hover:text-white transition-colors"><i
                                 class="text-xl ph ph-youtube-logo"></i></a>
-                        <a href="#"
+                        <a href="mailto:lab.informatika@ubhara.ac.id"
                             class="flex justify-center items-center bg-gray-800 hover:bg-primary rounded-full w-10 h-10 hover:text-white transition-colors"><i
                                 class="text-xl ph ph-envelope-simple"></i></a>
                     </div>
@@ -419,8 +493,8 @@
                                     class="text-xs ph-caret-right ph"></i> Jadwal Ruangan</a></li>
                         <li><a href="{{ route('lapor') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
                                     class="text-xs ph-caret-right ph"></i> Lapor Kerusakan</a></li>
-                        <li><a href="{{ route('beranda') }}#laboratorium" class="flex items-center gap-2 hover:text-accent transition-colors"><i
-                                    class="text-xs ph-caret-right ph"></i> SOP & Tata Tertib</a></li>
+                        <li><a href="{{ route('absensi') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph-caret-right ph"></i> Absensi Mahasiswa</a></li>
                     </ul>
                 </div>
 
@@ -435,19 +509,18 @@
                         <li><a href="{{ route('galeri') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
                                     class="text-xs ph-caret-right ph"></i> Galeri Kegiatan</a></li>
                         <li><a href="{{ route('anggota') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
-                                    class="text-xs ph-caret-right ph"></i> Pendaftaran Anggota</a></li>
-                        <li><a href="{{ route('berita') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
-                                    class="text-xs ph-caret-right ph"></i> Polling & Suara</a></li>
+                                    class="text-xs ph-caret-right ph"></i> Personalia & Anggota</a></li>
+                        <li><a href="{{ url('/admin/login') }}" class="flex items-center gap-2 hover:text-accent transition-colors"><i
+                                    class="text-xs ph-caret-right ph"></i> Login CMS Pengurus</a></li>
                     </ul>
                 </div>
             </div>
 
             <div
                 class="flex md:flex-row flex-col justify-between items-center gap-4 mt-12 pt-8 border-gray-800 border-t text-sm md:text-left text-center">
-                <p>&copy; 2026 Laboratorium & HIMATIKA Teknik Informatika. Universitas Bhayangkara Surabaya.</p>
+                <p>&copy; {{ date('Y') }} Laboratorium & HIMATIKA Teknik Informatika. Universitas Bhayangkara Surabaya.</p>
                 <div class="flex gap-4">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="{{ url('/admin/login') }}" class="text-gray-400 hover:text-white transition-colors">Panel CMS Admin</a>
                 </div>
             </div>
         </div>
@@ -455,17 +528,8 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Sample Initial Attendance Data
-        let attendanceList = [
-            { nim: '121401015', nama: 'Bagus Ramadhan', tujuan: 'Praktikum Pemrograman Web', jam: '08:15 WIB' },
-            { nim: '121401088', nama: 'Nabila Putri S.', tujuan: 'Pengerjaan Skripsi', jam: '08:45 WIB' },
-            { nim: '121401004', nama: 'Dimas Satria', tujuan: 'Praktikum Jaringan Komputer', jam: '09:10 WIB' },
-            { nim: '121401077', nama: 'Dewi Lestari', tujuan: 'Riset Asisten Lab', jam: '09:30 WIB' }
-        ];
-
         document.addEventListener('DOMContentLoaded', () => {
             startClock();
-            renderStudentsList();
             setupMobileMenu();
         });
 
@@ -485,83 +549,135 @@
             setInterval(updateTime, 1000);
         }
 
-        // Render Student List
-        function renderStudentsList() {
-            const listContainer = document.getElementById('students-list');
-            if (!listContainer) return;
-            listContainer.innerHTML = '';
+        // Form Submission via AJAX to Laravel Controller
+        async function handleFormSubmit(e) {
+            e.preventDefault();
 
-            // Update Total Count Badge
-            const countBadge = document.getElementById('total-count-badge');
-            if (countBadge) countBadge.textContent = attendanceList.length;
+            const submitBtn = document.getElementById('submitBtn');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnText = document.getElementById('btnText');
 
-            if (attendanceList.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="py-10 text-gray-400 text-xs text-center">
-                        <i class="block mb-1 text-gray-300 text-3xl ph ph-clipboard"></i>
-                        Belum ada data mahasiswa yang melakukan absensi hari ini.
-                    </div>
-                `;
+            const nim = document.getElementById('nim').value.trim();
+            const nama = document.getElementById('nama').value.trim();
+            const tujuan = document.getElementById('tujuan').value.trim();
+            const lab_id = document.getElementById('lab_id').value;
+
+            if (!nim || !nama || !tujuan) {
+                showToast('Mohon lengkapi NIM, Nama, dan Tujuan.', 'error');
                 return;
             }
 
-            attendanceList.forEach((student, index) => {
-                const card = document.createElement('div');
-                card.className = "student-item p-4 bg-gray-50 border border-gray-100 rounded-xl hover:bg-white hover:border-blue-200 transition-all shadow-2xs space-y-1.5";
-                card.setAttribute('data-search', `${student.nama} ${student.nim} ${student.tujuan}`.toLowerCase());
+            // Disable submit button during request
+            submitBtn.disabled = true;
+            btnText.textContent = 'Menyimpan...';
+            btnIcon.innerHTML = '<i class="ph ph-spinner animate-spin text-xl text-accent"></i>';
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-center gap-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="flex justify-center items-center bg-primary/10 border border-primary/20 rounded-lg w-8 h-8 font-bold text-primary text-xs shrink-0">
-                                ${index + 1}
-                            </div>
-                            <div class="min-w-0">
-                                <h4 class="font-bold text-gray-800 text-sm truncate">${student.nama}</h4>
-                                <span class="font-mono font-semibold text-primary text-xs">${student.nim}</span>
-                            </div>
-                        </div>
-                        <span class="inline-flex items-center gap-1 bg-emerald-50 px-2.5 py-1 border border-emerald-200 rounded-lg font-mono font-bold text-emerald-700 text-xs shrink-0">
-                            <i class="text-sm ph ph-clock"></i> ${student.jam}
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-1.5 pt-1.5 border-gray-200/60 border-t text-gray-600 text-xs">
-                        <i class="text-gray-400 ph ph-subtitles"></i>
-                        <span class="font-medium text-gray-700">Tujuan:</span>
-                        <span class="text-gray-600 truncate">${student.tujuan}</span>
-                    </div>
-                `;
-                listContainer.appendChild(card);
-            });
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                const response = await fetch("{{ route('absensi.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        nim: nim,
+                        nama: nama,
+                        tujuan: tujuan,
+                        lab_id: lab_id || null
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Prepend new attendance item to list
+                    prependStudentItem(result.data);
+
+                    // Update counter
+                    const countBadge = document.getElementById('total-count-badge');
+                    if (countBadge) {
+                        countBadge.textContent = result.total_today;
+                    }
+
+                    // Reset form
+                    document.getElementById('attendanceForm').reset();
+
+                    showToast(`Presensi berhasil! Selamat datang, ${result.data.nama}.`, 'success');
+                } else {
+                    const errorMsg = result.message || 'Terjadi kesalahan saat menyimpan presensi.';
+                    showToast(errorMsg, 'error');
+                }
+            } catch (error) {
+                console.error('Error submitting attendance:', error);
+                showToast('Gagal terhubung ke server. Periksa koneksi Anda.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Simpan Absensi';
+                btnIcon.innerHTML = '<i class="text-accent text-xl group-hover:scale-110 transition-transform ph ph-check-circle"></i>';
+            }
         }
 
-        // Form Submission Handler
-        function handleFormSubmit(e) {
-            e.preventDefault();
+        // Prepend Item into DOM
+        function prependStudentItem(data) {
+            const listContainer = document.getElementById('students-list');
+            if (!listContainer) return;
 
-            const nimInput = document.getElementById('nim');
-            const namaInput = document.getElementById('nama');
-            const tujuanInput = document.getElementById('tujuan');
+            // Remove empty state if present
+            const emptyState = document.getElementById('empty-state');
+            if (emptyState) emptyState.remove();
 
-            const nim = nimInput ? nimInput.value.trim() : '';
-            const nama = namaInput ? namaInput.value.trim() : '';
-            const tujuan = tujuanInput ? tujuanInput.value.trim() : '';
+            const card = document.createElement('div');
+            card.className = "student-item p-4 bg-blue-50/50 border border-blue-200 rounded-xl hover:bg-white hover:border-blue-300 transition-all shadow-2xs space-y-1.5 animate-pulse";
+            card.setAttribute('data-search', `${data.nama} ${data.nim} ${data.lab_nama || ''} ${data.tujuan}`.toLowerCase());
 
-            const now = new Date();
-            const jamStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+            const labBadge = data.lab_nama && data.lab_nama !== 'Umum / Semua Lab'
+                ? `<span class="ml-2 inline-flex items-center bg-blue-100 text-blue-800 text-[10px] font-medium px-2 py-0.5 rounded-full">${data.lab_nama}</span>`
+                : '';
 
-            // Insert new record at the top of the list
-            attendanceList.unshift({ nim, nama, tujuan, jam: jamStr });
+            card.innerHTML = `
+                <div class="flex justify-between items-center gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="flex justify-center items-center bg-emerald-500 text-white rounded-lg w-8 h-8 font-bold text-xs shrink-0 item-number">
+                            <i class="ph ph-check"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-bold text-gray-800 text-sm truncate">${data.nama}</h4>
+                            <span class="font-mono font-semibold text-primary text-xs">${data.nim}</span>
+                            ${labBadge}
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center gap-1 bg-emerald-100 px-2.5 py-1 border border-emerald-300 rounded-lg font-mono font-bold text-emerald-800 text-xs shrink-0">
+                        <i class="text-sm ph ph-clock"></i> ${data.jam}
+                    </span>
+                </div>
+                <div class="flex items-center gap-1.5 pt-1.5 border-gray-200/60 border-t text-gray-600 text-xs">
+                    <i class="text-gray-400 ph ph-subtitles"></i>
+                    <span class="font-medium text-gray-700">Tujuan:</span>
+                    <span class="text-gray-600 truncate">${data.tujuan}</span>
+                </div>
+            `;
 
-            // Re-render List & Metrics
-            renderStudentsList();
+            listContainer.prepend(card);
 
-            // Clear Form
-            const form = document.getElementById('attendanceForm');
-            if (form) form.reset();
+            setTimeout(() => {
+                card.classList.remove('bg-blue-50/50', 'border-blue-200', 'animate-pulse');
+                card.classList.add('bg-gray-50', 'border-gray-100');
+            }, 1500);
 
-            // Show Toast Notification
-            showToast(`${nama} (${nim}) berhasil absensi.`);
+            // Re-index item numbers
+            reindexList();
+        }
+
+        function reindexList() {
+            const numbers = document.querySelectorAll('.student-item .item-number');
+            numbers.forEach((el, idx) => {
+                if (!el.querySelector('i')) {
+                    el.textContent = idx + 1;
+                }
+            });
         }
 
         // Filter Students by Search Input
@@ -581,17 +697,31 @@
         }
 
         // Toast Notification Helper
-        function showToast(message) {
+        function showToast(message, type = 'success') {
             const toast = document.getElementById('toast-notify');
+            const toastTitle = document.getElementById('toast-title');
             const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+            const toastCard = document.getElementById('toast-card');
             if (!toast || !toastMsg) return;
+
             toastMsg.textContent = message;
+
+            if (type === 'error') {
+                toastTitle.textContent = 'Gagal';
+                toastIcon.className = "flex justify-center items-center bg-rose-500/20 rounded-xl w-8 h-8 text-rose-400 text-xl shrink-0";
+                toastIcon.innerHTML = '<i class="ph ph-x-bold"></i>';
+            } else {
+                toastTitle.textContent = 'Absensi Berhasil!';
+                toastIcon.className = "flex justify-center items-center bg-emerald-500/20 rounded-xl w-8 h-8 text-emerald-400 text-xl shrink-0";
+                toastIcon.innerHTML = '<i class="ph ph-check-bold"></i>';
+            }
 
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
 
             setTimeout(() => {
                 toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
-            }, 3000);
+            }, 3500);
         }
 
         // Mobile Menu Setup
@@ -614,28 +744,16 @@
                 }
             });
 
-            // Close mobile menu when a link is clicked
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('open');
-                    if (mobileMenuIcon) {
-                        mobileMenuIcon.classList.remove('ph-x');
-                        mobileMenuIcon.classList.add('ph-list');
-                    }
-                });
-            });
-
             // Header Scroll Effect
             const header = document.querySelector('header');
             if (header) {
                 window.addEventListener('scroll', () => {
                     if (window.scrollY > 20) {
                         header.classList.add('shadow-md');
-                        header.classList.remove('shadow-sm', 'py-1');
+                        header.classList.remove('shadow-sm');
                     } else {
                         header.classList.remove('shadow-md');
-                        header.classList.add('shadow-sm', 'py-1');
+                        header.classList.add('shadow-sm');
                     }
                 });
             }

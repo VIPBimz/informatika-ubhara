@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\AttendanceController;
+
 Route::get('/', function () {
     return view('index');
 })->name('beranda');
 
-Route::get('/absensi', function () {
-    return view('absensi');
-})->name('absensi');
+// Modul Presensi / Absensi Lab
+Route::get('/absensi', [AttendanceController::class, 'index'])->name('absensi');
+Route::post('/absensi', [AttendanceController::class, 'store'])->name('absensi.store');
+Route::get('/api/attendances/today', [AttendanceController::class, 'todayList'])->name('api.attendances.today');
 
 Route::get('/jadwal-lab', function () {
     return view('jadwal_lab');
@@ -34,9 +37,10 @@ Route::get('/lapor', function () {
     return view('lapor');
 })->name('lapor');
 
-Route::get('/anggota', function () {
-    return view('anggota');
-})->name('anggota');
+use App\Http\Controllers\MemberController;
+
+// Modul Direktori Anggota & Personalia
+Route::get('/anggota', [MemberController::class, 'index'])->name('anggota');
 
 Route::get('/berita', function () {
     return view('berita');

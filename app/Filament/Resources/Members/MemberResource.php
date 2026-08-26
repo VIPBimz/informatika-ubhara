@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Filament\Resources\Members;
+
+use App\Filament\Resources\Members\Pages\CreateMember;
+use App\Filament\Resources\Members\Pages\EditMember;
+use App\Filament\Resources\Members\Pages\ListMembers;
+use App\Filament\Resources\Members\Schemas\MemberForm;
+use App\Filament\Resources\Members\Tables\MembersTable;
+use App\Models\Member;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
+
+class MemberResource extends Resource
+{
+    protected static ?string $model = Member::class;
+
+    protected static string | UnitEnum | null $navigationGroup = 'Personalia & Akun';
+
+    protected static ?string $navigationLabel = 'Direktori Anggota';
+
+    protected static ?string $modelLabel = 'Personalia / Anggota';
+
+    protected static ?string $pluralModelLabel = 'Direktori Dosen, Aslab & Pengurus';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedIdentification;
+
+    public static function form(Schema $schema): Schema
+    {
+        return MemberForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return MembersTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListMembers::route('/'),
+            'create' => CreateMember::route('/create'),
+            'edit' => EditMember::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+}

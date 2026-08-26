@@ -135,12 +135,18 @@
                     <a href="{{ route('anggota') }}" class="text-gray-600 hover:text-primary font-medium px-1 py-2">Anggota</a>
                 </nav>
 
-                <!-- SSO Absensi Button (Desktop) -->
-                <div class="hidden md:flex items-center">
+                <!-- Action Buttons: Absensi & Login (Desktop) -->
+                <div class="hidden md:flex items-center gap-2.5">
                     <a href="{{ route('absensi') }}"
-                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
                         <i class="text-lg ph ph-user-circle"></i>
                         Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm px-4 lg:px-5 py-2.5 rounded-lg font-medium text-white text-sm transition-colors"
+                        title="Login CMS Portal">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
                     </a>
                 </div>
 
@@ -175,11 +181,18 @@
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Peminjaman Alat</a>
                 <a href="{{ route('lapor') }}"
                     class="block hover:bg-gray-50 px-3 py-2 rounded-lg font-medium text-gray-700 hover:text-primary text-base transition-colors">Lapor Kerusakan</a>
-                <a href="{{ route('absensi') }}"
-                    class="flex justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm mt-3 px-5 py-2.5 rounded-lg font-medium text-white transition-colors">
-                    <i class="text-lg ph ph-user-circle"></i>
-                    Absensi
-                </a>
+                <div class="flex gap-2.5 pt-2">
+                    <a href="{{ route('absensi') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-user-circle"></i>
+                        Absensi
+                    </a>
+                    <a href="{{ url('/admin/login') }}"
+                        class="flex flex-1 justify-center items-center gap-2 bg-primary hover:bg-blue-900 shadow-sm py-2.5 rounded-lg font-medium text-white text-sm transition-colors">
+                        <i class="text-lg ph ph-sign-in"></i>
+                        Login
+                    </a>
+                </div>
             </div>
         </div>
     </header>
