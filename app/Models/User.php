@@ -4,17 +4,99 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    public const ROLE_SUPERADMIN = 'superadmin';
+    public const ROLE_DOSEN = 'dosen';
+    public const ROLE_ASLAB = 'aslab';
+    public const ROLE_HIMATIKA = 'himatika';
+    public const ROLE_USER = 'user';
+
+    /**
+     * Daftar seluruh role yang didukung sistem.
+     */
+    public static function getRolesList(): array
+    {
+        return [
+            self::ROLE_SUPERADMIN => 'Super Admin (Akses Penuh)',
+            self::ROLE_DOSEN => 'Dosen Pembina / Kepala Lab',
+            self::ROLE_ASLAB => 'Asisten Laboratorium',
+            self::ROLE_HIMATIKA => 'Pengurus HIMATIKA',
+            self::ROLE_USER => 'Pengguna Terdaftar / Mahasiswa',
+        ];
+    }
+
+    /**
+     * Cek apakah user memiliki role Super Admin.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === self::ROLE_SUPERADMIN;
+    }
+
+    /**
+     * Cek apakah user memiliki role Dosen Pembina / Kepala Lab.
+     */
+    public function isDosen(): bool
+    {
+        return $this->role === self::ROLE_DOSEN;
+    }
+
+    /**
+     * Cek apakah user memiliki role Asisten Lab.
+     */
+    public function isAslab(): bool
+    {
+        return $this->role === self::ROLE_ASLAB;
+    }
+
+    /**
+     * Cek apakah user memiliki role HIMATIKA.
+     */
+    public function isHimatika(): bool
+    {
+        return $this->role === self::ROLE_HIMATIKA;
+    }
+
+    /**
+     * Avatar URL untuk Filament panel (HasAvatar).
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        if (! $this->avatar) {
+            return null;
+        }
+
+        return Storage::disk('public')->exists($this->avatar)
+            ? Storage::url($this->avatar)
+            : asset('storage/' . $this->avatar);
+    }
+
+    /**
+     * Accessor untuk foto avatar pengguna dengan fallback dinamis.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar) {
+            return Storage::disk('public')->exists($this->avatar)
+                ? Storage::url($this->avatar)
+                : asset('storage/' . $this->avatar);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';
+    }
 
     /**
      * Tentukan apakah user bisa login ke Filament Admin Panel.
@@ -33,6 +115,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'role',
         'nip_nidn',
         'phone',
         'avatar',

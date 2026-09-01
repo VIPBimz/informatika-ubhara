@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
@@ -19,16 +20,38 @@ class UsersTable
             ->columns([
                 ImageColumn::make('avatar')
                     ->label('Avatar')
-                    ->circular(),
+                    ->disk('public')
+                    ->circular()
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&background=1E3A8A&color=FBBF24&bold=true&size=100'),
                 TextColumn::make('name')
-                    ->label('Nama')
+                    ->label('Nama Lengkap')
                     ->searchable()
                     ->weight('bold'),
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable(),
+                TextColumn::make('role')
+                    ->label('Role Hak Akses')
+                    ->badge()
+                    ->colors([
+                        'danger' => 'superadmin',
+                        'success' => 'dosen',
+                        'warning' => 'aslab',
+                        'info' => 'himatika',
+                        'gray' => 'user',
+                    ])
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'superadmin' => 'Super Admin',
+                        'dosen' => 'Dosen / Kalab',
+                        'aslab' => 'Asisten Lab',
+                        'himatika' => 'HIMATIKA',
+                        'user' => 'Mahasiswa / User',
+                        default => ucfirst($state ?? '—'),
+                    })
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('phone')
-                    ->label('Telepon')
+                    ->label('Telepon / WA')
                     ->searchable(),
                 TextColumn::make('member.jabatan')
                     ->label('Jabatan Personalia')
@@ -37,7 +60,8 @@ class UsersTable
                     ->searchable(),
                 IconColumn::make('is_active')
                     ->label('Status Aktif')
-                    ->boolean(),
+                    ->boolean()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Terdaftar')
                     ->dateTime('d M Y')
@@ -45,6 +69,15 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('role')
+                    ->label('Filter Role Akses')
+                    ->options([
+                        'superadmin' => 'Super Admin',
+                        'dosen' => 'Dosen Pembina / Kepala Lab',
+                        'aslab' => 'Asisten Lab',
+                        'himatika' => 'Pengurus HIMATIKA',
+                        'user' => 'Mahasiswa / Pengguna Terdaftar',
+                    ]),
                 TernaryFilter::make('is_active')
                     ->label('Status Aktif'),
             ])

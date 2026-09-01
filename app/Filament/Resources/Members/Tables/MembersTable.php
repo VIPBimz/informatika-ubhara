@@ -22,7 +22,9 @@ class MembersTable
             ->columns([
                 ImageColumn::make('foto')
                     ->label('Foto')
-                    ->circular(),
+                    ->disk('public')
+                    ->circular()
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=100'),
                 TextColumn::make('nama')
                     ->label('Nama Personalia')
                     ->searchable()
