@@ -295,10 +295,8 @@
                             default => 'from-gray-700 to-gray-900'
                         };
 
-                        // Avatar photo resolver
-                        $avatarUrl = $member->foto
-                            ? asset('storage/' . $member->foto)
-                            : 'https://ui-avatars.com/api/?name=' . urlencode($member->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';
+                        // Avatar photo resolver via model accessor
+                        $avatarUrl = $member->foto_url;
                     @endphp
 
                     <div class="relative bg-white shadow-xs border border-gray-100 rounded-2xl overflow-hidden profile-card member-card"

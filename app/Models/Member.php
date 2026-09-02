@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Member extends Model
 {
@@ -36,6 +37,20 @@ class Member extends Model
             'urutan' => 'integer',
             'is_published' => 'boolean',
         ];
+    }
+
+    /**
+     * Accessor untuk URL foto profil personalia dengan fallback avatar.
+     */
+    public function getFotoUrlAttribute(): string
+    {
+        if ($this->foto) {
+            return Storage::disk('public')->exists($this->foto)
+                ? Storage::url($this->foto)
+                : asset('storage/' . $this->foto);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';
     }
 
     public function user(): BelongsTo

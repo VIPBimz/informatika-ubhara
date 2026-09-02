@@ -79,9 +79,13 @@ class MemberForm
                     ->label('Tampilkan di Halaman Publik Direktori')
                     ->default(true),
                 FileUpload::make('foto')
-                    ->label('Foto Profil')
+                    ->label('Foto Profil Personalia')
                     ->image()
+                    ->disk('public')
                     ->directory('members')
+                    ->visibility('public')
+                    ->maxSize(5120)
+                    ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB.')
                     ->columnSpanFull(),
             ]);
     }

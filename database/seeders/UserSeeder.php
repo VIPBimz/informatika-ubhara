@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Super Admin Lab & HIMATIKA',
                 'password' => Hash::make('password'),
+                'role' => User::ROLE_SUPERADMIN,
                 'phone' => '081234567890',
                 'is_active' => true,
             ]
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Dr. Ir. Dosen Pembina, M.Kom.',
                 'password' => Hash::make('password'),
+                'role' => User::ROLE_DOSEN,
                 'nip_nidn' => '0712345678',
                 'phone' => '081234567891',
                 'is_active' => true,
@@ -58,6 +60,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Koordinator Asisten Lab',
                 'password' => Hash::make('password'),
+                'role' => User::ROLE_ASLAB,
                 'nip_nidn' => '2112001',
                 'phone' => '081234567892',
                 'is_active' => true,
@@ -86,6 +89,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Divisi Kominfo HIMATIKA',
                 'password' => Hash::make('password'),
+                'role' => User::ROLE_HIMATIKA,
                 'nip_nidn' => '2212005',
                 'phone' => '081234567893',
                 'is_active' => true,
