@@ -26,6 +26,8 @@ class UserAndMemberManagementTest extends TestCase
 
     public function test_avatar_and_photo_url_accessors_and_fallbacks(): void
     {
+        Storage::fake('public');
+
         $user = User::factory()->create([
             'name' => 'Bima Testing',
             'role' => User::ROLE_SUPERADMIN,
@@ -37,14 +39,19 @@ class UserAndMemberManagementTest extends TestCase
         $this->assertStringContainsString('Bima+Testing', $user->avatar_url);
         $this->assertNull($user->getFilamentAvatarUrl());
 
-        // When avatar is set
+        // When avatar is set in DB but file physically missing from disk
         $user->avatar = 'avatars/profile.png';
         $user->save();
 
-        $this->assertStringContainsString('storage/avatars/profile.png', $user->avatar_url);
-        $this->assertStringContainsString('storage/avatars/profile.png', $user->getFilamentAvatarUrl());
+        $this->assertStringContainsString('ui-avatars.com', $user->avatar_url);
+        $this->assertNull($user->getFilamentAvatarUrl());
 
-        // Member photo fallback
+        // When avatar file physically exists on disk
+        Storage::disk('public')->put('avatars/profile.png', 'fake image content');
+        $this->assertStringContainsString('avatars/profile.png', $user->avatar_url);
+        $this->assertStringContainsString('avatars/profile.png', $user->getFilamentAvatarUrl());
+
+        // Member photo fallback when null
         $member = new Member([
             'nama' => 'John Doe Lab',
             'foto' => null,
@@ -53,7 +60,12 @@ class UserAndMemberManagementTest extends TestCase
         $this->assertStringContainsString('ui-avatars.com', $member->foto_url);
         $this->assertStringContainsString('John+Doe+Lab', $member->foto_url);
 
+        // Member photo fallback when file is missing from disk
         $member->foto = 'members/johndoe.jpg';
-        $this->assertStringContainsString('storage/members/johndoe.jpg', $member->foto_url);
+        $this->assertStringContainsString('ui-avatars.com', $member->foto_url);
+
+        // Member photo when file exists on disk
+        Storage::disk('public')->put('members/johndoe.jpg', 'fake image content');
+        $this->assertStringContainsString('members/johndoe.jpg', $member->foto_url);
     }
 }

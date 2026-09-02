@@ -23,6 +23,7 @@ class MembersTable
                 ImageColumn::make('foto')
                     ->label('Foto')
                     ->disk('public')
+                    ->checkFileExistence()
                     ->circular()
                     ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=100'),
                 TextColumn::make('nama')

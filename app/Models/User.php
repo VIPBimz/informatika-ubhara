@@ -75,13 +75,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     public function getFilamentAvatarUrl(): ?string
     {
-        if (! $this->avatar) {
+        if (! $this->avatar || ! Storage::disk('public')->exists($this->avatar)) {
             return null;
         }
 
-        return Storage::disk('public')->exists($this->avatar)
-            ? Storage::url($this->avatar)
-            : asset('storage/' . $this->avatar);
+        return Storage::disk('public')->url($this->avatar);
     }
 
     /**
@@ -89,10 +87,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     public function getAvatarUrlAttribute(): string
     {
-        if ($this->avatar) {
-            return Storage::disk('public')->exists($this->avatar)
-                ? Storage::url($this->avatar)
-                : asset('storage/' . $this->avatar);
+        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
+            return Storage::disk('public')->url($this->avatar);
         }
 
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';
