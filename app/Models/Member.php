@@ -44,10 +44,8 @@ class Member extends Model
      */
     public function getFotoUrlAttribute(): string
     {
-        if ($this->foto) {
-            return Storage::disk('public')->exists($this->foto)
-                ? Storage::url($this->foto)
-                : asset('storage/' . $this->foto);
+        if ($this->foto && Storage::disk('public')->exists($this->foto)) {
+            return Storage::disk('public')->url($this->foto);
         }
 
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->nama) . '&background=1E3A8A&color=FBBF24&bold=true&size=200';

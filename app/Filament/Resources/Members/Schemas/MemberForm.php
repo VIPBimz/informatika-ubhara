@@ -80,12 +80,13 @@ class MemberForm
                     ->default(true),
                 FileUpload::make('foto')
                     ->label('Foto Profil Personalia')
-                    ->image()
+                    ->avatar()
                     ->disk('public')
                     ->directory('members')
                     ->visibility('public')
                     ->maxSize(5120)
                     ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB.')
+                    ->alignCenter()
                     ->columnSpanFull(),
             ]);
     }
