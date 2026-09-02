@@ -84,9 +84,8 @@ class MemberForm
                     ->disk('public')
                     ->directory('members')
                     ->visibility('public')
-                    ->imageEditor()
                     ->maxSize(5120)
-                    ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB. Disimpan di storage publik.')
+                    ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB.')
                     ->columnSpanFull(),
             ]);
     }

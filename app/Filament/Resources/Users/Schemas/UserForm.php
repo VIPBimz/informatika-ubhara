@@ -101,13 +101,13 @@ class UserForm
                     }),
                 FileUpload::make('avatar')
                     ->label('Foto Avatar Pengguna')
-                    ->image()
+                    ->avatar()
                     ->disk('public')
                     ->directory('avatars')
                     ->visibility('public')
-                    ->imageEditor()
                     ->maxSize(5120)
-                    ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB. Disimpan di storage publik.')
+                    ->helperText('Format JPG, PNG, atau WEBP. Maksimal 5MB.')
+                    ->alignCenter()
                     ->columnSpanFull(),
             ]);
     }
